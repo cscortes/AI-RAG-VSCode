@@ -8,10 +8,10 @@ RUN sudo dnf install -y lshw git g++ make htop && \
         sudo dnf install -y python3-pip python3-devel 
 
 FROM build1 as build2 
-RUN pip install langchain jupyter && \
-    pip install -U langchain langchain_community && \
+RUN pip install langchain_nomic jupyter && \
+    pip install -U langchain_nomic langchain_community && \
     pip install -U tiktoken langchainhub chromadb && \
-    pip install -U langchain langgraph tavily-python && \
+    pip install -U langchain_nomic langgraph tavily-python && \
     pip install -U gpt4all langchain-text-splitters
 
 FROM build2 as build3 
