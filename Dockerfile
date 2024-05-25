@@ -1,10 +1,10 @@
 FROM fedora:latest as build0
-RUN useradd --uid 1000 --user-group -s /bin/bash vscode
-RUN echo "vscode  ALL=(ALL)   NOPASSWD: ALL"  >> /etc/sudoers
+RUN useradd --uid 1000 --user-group -s /bin/bash vscode && \
+    echo "vscode  ALL=(ALL)   NOPASSWD: ALL"  >> /etc/sudoers
 USER vscode
 
 FROM build0 as build1
-RUN sudo dnf install -y lshw git g++ make htop && \
+RUN sudo dnf install -y lshw git g++ make htop procps && \
         sudo dnf install -y python3-pip python3-devel 
 
 FROM build1 as build2 
@@ -15,5 +15,10 @@ RUN pip install langchain_nomic jupyter && \
     pip install -U gpt4all langchain-text-splitters
 
 FROM build2 as build3 
-RUN sudo curl -fsSL https://ollama.com/install.sh | sh
+
+RUN sudo mkdir -p /usr/share/ollama && \
+    sudo useradd --user-group -s /bin/bash ollama && \
+    sudo curl -fsSL https://ollama.com/install.sh | sh
+
+RUN echo "done"
 
