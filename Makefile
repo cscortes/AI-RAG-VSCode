@@ -31,7 +31,7 @@ llamasrv:
 ifeq ($(running), 0)
 	@echo Waiting for server to start ...
 	ollama serve & 2>&1
-	sleep 10 
+	sleep 60
 endif
 
 $(OLL_CACHE):
