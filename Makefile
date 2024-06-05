@@ -1,8 +1,8 @@
 # Check if program is already running (process name should match PROGRAM_NAME)
 running := $(shell ps -C ollama | grep ollama | wc -l)
 
-OLL_CNF=/home/vscode/.ollama
-OLL_CACHE=/home/vscode/rag01/ollama.sav
+OLL_CNF=/home/ollama/.ollama
+OLL_CACHE=/home/ollama/rag01/ollama.sav
 
 # ===================================================
 # for use outside of container
@@ -30,8 +30,15 @@ clean: info
 llamasrv:
 ifeq ($(running), 0)
 	@echo Waiting for server to start ...
-	ollama serve & 2>&1
-	sleep 60
+	ollama serve 2>&1 & 
+	@echo Waiting for 40 ... 
+	@sleep 10
+	@echo Waiting for 30 ... 
+	@sleep 10
+	@echo Waiting for 20 ... 
+	@sleep 10
+	@echo Waiting for 10 ... 
+	@sleep 10
 endif
 
 $(OLL_CACHE):
@@ -42,6 +49,6 @@ $(OLL_CNF): $(OLL_CACHE)
 	@echo "## Creating a symlink to the LLM"
 	ln -sv  $(OLL_CACHE) $(OLL_CNF)
 
-llama3: $(OLL_CNF) llamasrv
+run: $(OLL_CNF) llamasrv
 	@echo "## Pulling llama3 "
 	ollama pull llama3 
